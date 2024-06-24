@@ -6,27 +6,20 @@ const { getManagedCacheStorage } = require('../cache');
 
 const format = (song) => {
 	return {
-		// id: song.FileHash,
-		// name: song.SongName,
-		// duration: song.Duration * 1000,
-		// album: {id: song.AlbumID, name: song.AlbumName},
-		// artists: song.SingerId.map((id, index) => ({id, name: SingerName[index]}))
-		id: song['hash'],
-		id_hq: song['320hash'],
-		id_sq: song['sqhash'],
-		name: song['songname'],
-		duration: song['duration'] * 1000,
-		album: { id: song['album_id'], name: song['album_name'] },
+		id: song['id'],
+		name: song['name'],
+		artist: song['artist'],
+		album: song['album'],
+		pic_id: song['pic_id'],
+		lyric_id: song['lyric_id'],
+		source: song['source'],
 	};
 };
 
 const search = (info) => {
 	const url =
-		// 'http://songsearch.kugou.com/song_search_v2?' +
-		'http://mobilecdn.kugou.com/api/v3/search/song?' +
-		'keyword=' +
-		encodeURIComponent(info.keyword) +
-		'&page=1&pagesize=10';
+		'https://music-api.gdstudio.xyz/api.php?types=search&' +
+		'name=' + encodeURIComponent(info.keyword);
 
 	return request('GET', url)
 		.then((response) => response.json())
@@ -39,43 +32,29 @@ const search = (info) => {
 		.catch(() => insure().kugou.search(info));
 };
 
-const single = (song, format) => {
-	const getHashId = () => {
-		switch (format) {
-			case 'hash':
-				return song.id;
-			case 'hqhash':
-				return song.id_hq;
-			case 'sqhash':
-				return song.id_sq;
-			default:
-				break;
-		}
-		return '';
-	};
-
+const track = (song) => {
+	// Credit: This API is provided by GD studio (music.gdstudio.xyz).
 	const url =
-		'http://trackercdn.kugou.com/i/v2/?' +
-		'key=' +
-		crypto.md5.digest(`${getHashId()}kgcloudv2`) +
-		'&hash=' +
-		getHashId() +
-		'&' +
-		'appid=1005&pid=2&cmd=25&behavior=play&album_id=' +
-		song.album.id;
+		'https://music-api.gdstudio.xyz/api.php?types=url&source='+ song.source + '&id=' +
+		song.id +
+		'&br=' +
+		['999', '320'].slice(
+			select.ENABLE_FLAC ? 0 : 1,
+			select.ENABLE_FLAC ? 1 : 2
+		);
 	return request('GET', url)
 		.then((response) => response.json())
-		.then((jsonBody) => jsonBody.url[0] || Promise.reject());
-};
+		.then((jsonBody) => {
+			if (
+				jsonBody &&
+				typeof jsonBody === 'object' &&
+				(!'url') in jsonBody
+			)
+				return Promise.reject();
 
-const track = (song) =>
-	Promise.all(
-		['sqhash', 'hqhash', 'hash']
-			.slice(select.ENABLE_FLAC ? 0 : 1)
-			.map((format) => single(song, format).catch(() => null))
-	)
-		.then((result) => result.find((url) => url) || Promise.reject())
-		.catch(() => insure().kugou.track(song));
+			return jsonBody.br > 0 ? jsonBody.url : Promise.reject();
+		});
+};
 
 const cs = getManagedCacheStorage('provider/kugou');
 const check = (info) => cs.cache(info, () => search(info)).then(track);
