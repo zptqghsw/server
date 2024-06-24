@@ -24,8 +24,8 @@ const search = (info) => {
 	return request('GET', url)
 		.then((response) => response.json())
 		.then((jsonBody) => {
-			// const list = jsonBody.data.lists.map(format)
-			const list = jsonBody.data.info.map(format);
+			const list = jsonBody.data.lists.map(format)
+			// const list = jsonBody.data.info.map(format);
 			const matched = select(list, info);
 			return matched ? matched : Promise.reject();
 		})
