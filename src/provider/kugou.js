@@ -18,7 +18,7 @@ const format = (song) => {
 
 const search = (info) => {
 	const url =
-		'https://music-api.gdstudio.xyz/api.php?types=search&source=kugou&' +
+		'https://music-api.gdstudio.xyz/api.php?types=search&source=spotify&' +
 		'name=' + encodeURIComponent(info.keyword);
 
 	return request('GET', url)
@@ -35,7 +35,7 @@ const search = (info) => {
 const track = (song) => {
 	// Credit: This API is provided by GD studio (music.gdstudio.xyz).
 	const url =
-		'https://music-api.gdstudio.xyz/api.php?types=url&source=kugou&id=' +
+		'https://music-api.gdstudio.xyz/api.php?types=url&source=spotify&id=' +
 		song.id +
 		'&br=' +
 		['999', '320'].slice(
