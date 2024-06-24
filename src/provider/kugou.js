@@ -26,7 +26,8 @@ const search = (info) => {
 	return request('GET', url)
 		.then((response) => response.json())
 		.then((jsonBody) => {
-			const list = jsonBody.data.lists.map(format)
+			logger.debug({jsonBody}, 'Getting Song Json');
+			const list = jsonBody.map(format)
 			// const list = jsonBody.data.info.map(format);
 			const matched = select(list, info);
 			logger.debug({matched}, 'Getting Song URL');
