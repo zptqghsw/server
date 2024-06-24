@@ -3,6 +3,8 @@ const select = require('./select');
 const crypto = require('../crypto');
 const request = require('../request');
 const { getManagedCacheStorage } = require('../cache');
+const { logScope } = require('../logger');
+const logger = logScope('provider/match');
 
 const format = (song) => {
 	return {
@@ -27,6 +29,7 @@ const search = (info) => {
 			const list = jsonBody.data.lists.map(format)
 			// const list = jsonBody.data.info.map(format);
 			const matched = select(list, info);
+			logger.debug({matched}, 'Getting Song URL');
 			return matched ? matched : Promise.reject();
 		})
 		.catch(() => insure().kugou.search(info));
