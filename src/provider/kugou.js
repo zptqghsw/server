@@ -54,7 +54,7 @@ const track = (song) => {
 				(!'url') in jsonBody
 			)
 				return Promise.reject();
-            const url_new = 'https://music.gdstudio.xyz/' + jsonBody.url
+            const url_new = 'https://music-api.gdstudio.xyz/' + jsonBody.url
 			return jsonBody.br > 0 ? url_new : Promise.reject();
 		});
 };
