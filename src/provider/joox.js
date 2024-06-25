@@ -55,6 +55,7 @@ const search = (info) => {
 	return request('GET', url)
 		.then((response) => response.json())
 		.then((jsonBody) => {
+			logger.debug({jsonBody}, 'Getting Song Json');
 			const list = jsonBody.map(format)
 			// const list = jsonBody.data.info.map(format);
 			const matched = select(list, info);
