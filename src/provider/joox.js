@@ -50,7 +50,7 @@ const format = (song) => {
 const search = (info) => {
 	const url =
 		'https://music-api.gdstudio.xyz/api.php?types=search&source=tidal&' +
-		'name=' + encodeURIComponent(traditionalized(info.keyword));
+		'name=' + encodeURIComponent(traditionalized(info.keyword).replace("周傑倫", "周杰倫"));
 
 	return request('GET', url)
 		.then((response) => response.json())
