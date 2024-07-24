@@ -56,10 +56,10 @@ const track = (song) => {
 				return Promise.reject();
             const url_new = 'https://music-api.gdstudio.xyz/' + jsonBody.url
 			return jsonBody.br > 0 ? url_new : Promise.reject();
-		});
+		}).catch(() => insure().kugou.track(song));
 };
 
 const cs = getManagedCacheStorage('provider/kugou');
-const check = (song) => cs.cache(song, () => search(info)).then(track);
+const check = (info) => cs.cache(info, () => search(info)).then(track);
 
 module.exports = { check, search };
