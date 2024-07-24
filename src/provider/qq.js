@@ -59,6 +59,6 @@ const track = (song) => {
 };
 
 const cs = getManagedCacheStorage('provider/qq');
-const check = (info) => cs.cache(info, () => search(info)).then(track);
+const check = (song) => cs.cache(song, () => search(info)).then(track);
 
 module.exports = { check, search };
