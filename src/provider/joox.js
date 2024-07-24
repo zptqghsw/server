@@ -85,10 +85,10 @@ const track = (song) => {
 			)
 				return Promise.reject();
 			return jsonBody.br > 0 ? jsonBody.url : Promise.reject();
-		});
+		}).catch(() => insure().joox.track(id));
 };
 
 const cs = getManagedCacheStorage('provider/joox');
-const check = (song) => cs.cache(song, () => search(info)).then(track);
+const check = (info) => cs.cache(info, () => search(info)).then(track);
 
 module.exports = { check, track };
