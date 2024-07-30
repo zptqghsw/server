@@ -55,7 +55,7 @@ const track = (song) => {
 			)
 				return Promise.reject();
 			return jsonBody.br > 0 ? jsonBody.url : Promise.reject();
-		}).catch(() => insure().qq.track(song));
+		}).then((result) => result.find((url) => url) || Promise.reject()).catch(() => insure().qq.track(song));
 };
 
 const cs = getManagedCacheStorage('provider/qq');
