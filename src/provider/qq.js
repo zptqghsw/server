@@ -55,10 +55,10 @@ const track = (song) => {
 			)
 				return Promise.reject();
 			return jsonBody.br > 0 ? jsonBody.url : Promise.reject();
-		}).then((result) => result.find((url) => url) || Promise.reject()).catch(() => insure().qq.track(song));
+		}).catch(() => insure().qq.track(song));
 };
 
 const cs = getManagedCacheStorage('provider/qq');
 const check = (info) => cs.cache(info, () => search(info)).then(track);
 
-module.exports = { check, search };
+module.exports = { check, track };
