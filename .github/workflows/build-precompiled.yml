@@ -45,7 +45,7 @@ jobs:
                   commit-message: 'build(precompiled): make a bundle with the dependencies'
                   author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
                   branch: ci/build-precompiled
-                  #delete-branch: true
+                  delete-branch: true
                   title: 'build(precompiled): make a bundle with the dependencies'
                   body: |
                       Merge till a new release tagged.
