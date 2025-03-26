@@ -80,6 +80,7 @@ hook.target.path = new Set([
 	'/batch',
 	'/api/batch',
 	'/api/listen/together/privilege/get',
+	'/api/playmode/intelligence/list',
 	'/api/v1/search/get',
 	'/api/v1/search/song/get',
 	'/api/search/complex/get',
