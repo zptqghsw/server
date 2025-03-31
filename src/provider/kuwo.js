@@ -29,7 +29,7 @@ const search = (info) => {
 const track = (song) => {
 	const url =
 		'https://www.hhlqilongzhu.cn/api/dg_kuwomusic.php?type=json&msg=' +
-		song.name + 'n=' + song.id;
+		song.name + '&n=' + song.id;
 
 	return request('GET', url)
 		.then((response) => response.json())
