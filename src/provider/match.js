@@ -148,11 +148,7 @@ async function check(url) {
 	headerReferer.forEach((refererValue, urlPattern) => {
 		if (isHost(urlPattern)) header.referer = refererValue;
 	});
-	if (isHost('hhlqilongzhu.cn')) {
-		song.br = 192000;
-        song.url = url;
-        return song;
-	}
+
 	const response = await request('GET', url, header);
 	const {
 		/** @type {Record<string, string>} */
